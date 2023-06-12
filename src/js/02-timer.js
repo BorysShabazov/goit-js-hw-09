@@ -10,6 +10,7 @@ const dataSecondsEl = document.querySelector('[data-seconds]');
 btnStartEl.disabled = true;
 let selectedDate;
 let timer;
+let timerId;
 const dateNow = new Date().getTime();
 
 const options = {
@@ -57,13 +58,16 @@ function addLeadingZero(value) {
 
 function timerStart() {
   const dateObj = convertMs(timer);
+  if (timerId) {
+    clearInterval(timerId);
+  }
 
   dataDaysEl.textContent = addLeadingZero(`${dateObj.days}`);
   dataHoursEl.textContent = addLeadingZero(`${dateObj.hours}`);
   dataMinutesEl.textContent = addLeadingZero(`${dateObj.minutes}`);
   dataSecondsEl.textContent = addLeadingZero(`${dateObj.seconds}`);
 
-  const timerId = setInterval(() => {
+  timerId = setInterval(() => {
     dataDaysEl.textContent = addLeadingZero(`${dateObj.days}`);
     if (dataDaysEl.textContent === '-1') {
       dataDaysEl.textContent = '00';
@@ -95,6 +99,7 @@ function timerStart() {
       clearInterval(timerId);
     }
   }, 1000);
+  console.log(timerId);
 }
 
 btnStartEl.addEventListener('click', timerStart);
